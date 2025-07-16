@@ -6,8 +6,8 @@ import Top from './Top';
 
 function App() {
   
-  const [protuctAmount, setProtuctAmount] = useState(2);
-  const [cartItems, setCartItems] = useState(2);  
+  const [protuctAmount, setProtuctAmount] = useState(10);
+  const [cartItems, setCartItems] = useState(10);  
 
   const addProtuct = () => { setCartItems(cartItems + 1); }
 

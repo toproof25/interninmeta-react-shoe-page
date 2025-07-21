@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useRef  } from 'react';
 
-function AddPaymentPage() {
+function AddPaymentPage({onClick}) {
 
+  // 카드 이름
   const [cardName, setCardName] = useState("");
 
+  // 카드 번호
   const [cardNumber, setCardNumber] = useState("");
   const [formattedCardNumber, setFormattedCardNumber] = useState('');
 
+  // 유효기간
   const [cardExpirationDate, setCardExpirationDate] = useState("");
 
+  // 보안번호
   const [cardCvv, setCardCvv] = useState("");
-  const [cardPassword, setCardPassword] = useState("");
+
+  // 카드 비밀번호
+  const [cardPassword, setCardPassword] = useState(['', '']);
+  const firstInputRef = useRef(null);
+  const secondInputRef = useRef(null);
 
   // 카드 번호 핸들링
   const handleNumberChange = (event) => {
@@ -59,6 +67,8 @@ function AddPaymentPage() {
     setFormattedCardNumber(displayValue);
     console.log('카드번호 입력 값:', event.target.value);
   };
+
+
   // 유효기간 핸들링
   const handleDateChange = (event) => {
     const rawValue = event.target.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
@@ -71,35 +81,61 @@ function AddPaymentPage() {
     setCardExpirationDate(formattedValue);
     console.log('유효기간 입력 값:', event.target.value);
   };
+
+
   // 카드이름 핸들링
   const handleNameChange = (event) => {
     setCardName(event.target.value);
     console.log('카드이름 입력 값:', event.target.value);
   };
+
+
   // 보안코드 핸들링
   const handleCVVChange = (event) => {
     const rawValue = event.target.value.replace(/\D/g, '');
     setCardCvv(rawValue.slice(0, 3));
     console.log('보안코드 입력 값:', event.target.value);
   };
-  // 비밀번호 핸들링
-  const handlePasswordChange = (event) => {
-    //setCardNumber(event.target.value);
-    console.log('비밀번호 입력 값:', event.target.value);
+
+
+  // 비밀번호 변경을 처리하는 핸들러 함수
+  const handlePasswordChange = (e, index) => {
+    const value = e.target.value;
+
+    // 비밀번호 state 업데이트
+    const newPassword = [...cardPassword];
+    // 입력된 값으로 해당 위치의 비밀번호를 갱신 (값이 없으면 ''로 덮어쓰여 삭제 효과)
+    newPassword[index] = value;
+    setCardPassword(newPassword);
+
+    // 첫 번째 칸에 값이 입력되면, 두 번째 칸으로 포커스 이동
+    if (index === 0 && value.length > 0) {
+      secondInputRef.current.focus();
+    }
+  };
+
+  // 4. Backspace 키 입력을 처리하는 핸들러 함수
+  const handleKeyDown = (e, index) => {
+    // Backspace를 누르고, 해당 칸이 비어있을 때
+    if (e.key === 'Backspace' && !cardPassword[index]) {
+      // 두 번째 칸이었다면, 첫 번째 칸으로 포커스 이동
+      if (index === 1) {
+        firstInputRef.current.focus();
+      }
+    }
   };
 
   return (
-    <div className='w-full m-auto bg-green-100 text-center'>
-      <div>카드추가 x</div>
+    <div className='w-full m-auto text-center'>
 
-      <div className='w-64 h-36 mx-auto my-5 rounded-md bg-black relative'>
+      <div className='w-64 h-36 mx-auto my-5 rounded-md bg-black shadow-md relative'>
         <div className='px-5 py-3.5 bg-yellow-300 rounded-md absolute left-4 bottom-16'></div>
         <div className='text-white text-center w-full absolute bottom-9'>{formattedCardNumber}</div>
         <div className='text-white text-left w-32 absolute left-4 bottom-2'>{cardName==="" ? "NAME" : cardName}</div>
         <div className='text-white text-right w-16 absolute right-4 bottom-2'>{cardExpirationDate==="" ? "MM/YY" : cardExpirationDate}</div>
       </div>
       
-      <div className='w-2/4 mx-auto text-left'>
+      <div className='w-3/4 mx-auto text-left'>
         <form>
           <div className='mb-3'>
             <div className='text-gray-500 text-sm'>카드번호</div>
@@ -151,13 +187,19 @@ function AddPaymentPage() {
             <div className='text-gray-500 text-sm'>카드 비밀번호</div>
             <input 
               type='password' 
-              onChange={handlePasswordChange}
+              ref={firstInputRef}
+              value={cardPassword[0]}
+              onChange={(e) => handlePasswordChange(e, 0)}
+              onKeyDown={(e) => handleKeyDown(e, 0)}
               maxLength="1"
               className='mr-3 w-12 bg-gray-200 text-black py-2 px-2 font-bold rounded-xl text-center' 
             />
             <input 
               type='password' 
-              onChange={handlePasswordChange}
+              ref={secondInputRef}
+              value={cardPassword[1]}
+              onChange={(e) => handlePasswordChange(e, 1)}
+              onKeyDown={(e) => handleKeyDown(e, 1)}
               maxLength="1"
               className='mr-3 w-12 bg-gray-200 text-black py-2 px-2 font-bold rounded-xl text-center' 
             />
@@ -166,6 +208,11 @@ function AddPaymentPage() {
 
           </div>
 
+          <div className='text-center py-10'>
+            <button 
+              onClick={onClick}
+              className='py-2 px-12 bg-black w-full h-12 text-xl text-white rounded-3xl text-center'>작성 완료</button>
+          </div>
 
 
 

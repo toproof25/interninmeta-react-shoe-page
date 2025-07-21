@@ -1,6 +1,6 @@
 import logo from './images/shoes.svg';
 
-function ProductCard({addProtuct}) {
+function ProductCard({addProtuct, checkPayment}) {
   return (
     // 전체 카드: 최대 너비, 그림자, 둥근 모서리, 배경색, 내용 넘침 방지
     <div className="max-w-sm rounded-xl overflow-hidden shadow-lg bg-white text-black text-left">
@@ -16,10 +16,16 @@ function ProductCard({addProtuct}) {
         <p className="font-semibold text-xl mb-4">
           35,000원
         </p>
-        <button className="bg-gray-300 text-gray-800 font-bold py-1.5 px-4 rounded-3xl text-sm" 
+        <button className="bg-black text-white font-bold py-1.5 px-4 rounded-3xl text-sm mr-2" 
           onClick={addProtuct}
         >
           담김!
+        </button>
+
+        <button className="bg-yellow-300 text-gray-800 font-bold py-1.5 px-4 rounded-3xl text-sm" 
+          onClick={checkPayment}
+        >
+          구매
         </button>
 
       </div>

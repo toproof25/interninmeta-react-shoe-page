@@ -28,3 +28,15 @@ test('10개의 상품 카드가 정상적으로 나타남', () => {
   // 해당 버튼의 개수가 10개인지 검증
   expect(addToCartButtons.length).toBe(10);
 });
+
+
+// 세 번째 테스트 : 결제 버튼이 표시되는지 검증
+test('상품 카드 개수에 맞게 구매 버튼이 정상적으로 나타난다', () => {
+  render(<App />);
+
+  // "구매" 이란 버튼을 찾는다 
+  const addToPayButtons = screen.getAllByRole('button', { name: /구매/i });
+
+  // 해당 버튼의 개수가 10개인지 검증
+  expect(addToPayButtons.length).toBe(10);
+});

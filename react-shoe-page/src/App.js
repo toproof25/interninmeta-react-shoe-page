@@ -10,18 +10,17 @@ function App() {
   const [payments, setPayments] = useState(0);
   const [protuctAmount, setProtuctAmount] = useState(10);
   const [cartItems, setCartItems] = useState(10);  
-  
-  
-  const [isAddPayment, setIsAddPayment] = useState(true);  
 
   const addProtuct = () => { 
     setCartItems(cartItems + 1); 
   }
+  
+  const [isPaymentWindow, setIsPaymentWindow] = useState(false);  
   const checkPayment = () => {
     if (payments === 0)
     {
       console.log("결제 수단좀 추가해라");
-      setIsAddPayment(true);
+      setIsPaymentWindow(true);
       setPayments(0);
       setProtuctAmount(10);
     }
@@ -40,15 +39,17 @@ function App() {
       </header>
 
       {/* 결제 수단 유무에 따라 화면 변경 */}
-      {isAddPayment ? (
-        <PaymentPage />
-      ) : (
+      <div className="relative">
+        {/* 상품 목록 페이지는 항상 렌더링 */}
         <ProductListPage
           protuctAmount={protuctAmount}
           addProtuct={addProtuct}
           checkPayment={checkPayment}
         />
-      )}
+
+        {/* isPaymentWindow가 true일 때만 PaymentPage를 팝업으로 렌더링 */}
+        {isPaymentWindow && <PaymentPage onClose={() => setIsPaymentWindow(false)} />}
+      </div>
 
     </div>
   );

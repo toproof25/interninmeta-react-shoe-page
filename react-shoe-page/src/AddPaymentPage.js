@@ -1,6 +1,6 @@
 import React, { useState, useRef  } from 'react';
 
-function AddPaymentPage({onClick}) {
+function AddPaymentPage({setCardList, onClick}) {
 
   // 카드 이름
   const [cardName, setCardName] = useState("");
@@ -68,7 +68,6 @@ function AddPaymentPage({onClick}) {
     console.log('카드번호 입력 값:', event.target.value);
   };
 
-
   // 유효기간 핸들링
   const handleDateChange = (event) => {
     const rawValue = event.target.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
@@ -82,13 +81,11 @@ function AddPaymentPage({onClick}) {
     console.log('유효기간 입력 값:', event.target.value);
   };
 
-
   // 카드이름 핸들링
   const handleNameChange = (event) => {
     setCardName(event.target.value);
     console.log('카드이름 입력 값:', event.target.value);
   };
-
 
   // 보안코드 핸들링
   const handleCVVChange = (event) => {
@@ -96,7 +93,6 @@ function AddPaymentPage({onClick}) {
     setCardCvv(rawValue.slice(0, 3));
     console.log('보안코드 입력 값:', event.target.value);
   };
-
 
   // 비밀번호 변경을 처리하는 핸들러 함수
   const handlePasswordChange = (e, index) => {
@@ -114,7 +110,7 @@ function AddPaymentPage({onClick}) {
     }
   };
 
-  // 4. Backspace 키 입력을 처리하는 핸들러 함수
+  // Backspace 키 입력을 처리하는 핸들러 함수
   const handleKeyDown = (e, index) => {
     // Backspace를 누르고, 해당 칸이 비어있을 때
     if (e.key === 'Backspace' && !cardPassword[index]) {
@@ -125,8 +121,16 @@ function AddPaymentPage({onClick}) {
     }
   };
 
+  // 작성 완료 누를 시 발생
+  const handleSaveButton = () => {
+    let newCard = [cardName, formattedCardNumber, cardExpirationDate, cardCvv, cardPassword];
+    setCardList(prev => [...prev, newCard]); // 기존 배열 뒤에 새 배열 추가
+    onClick();
+  }
+
+
   return (
-    <div className='w-full m-auto text-center'>
+    <div className='w-full flex flex-col h-full overflow-hidden text-center'>
 
       <div className='w-64 h-36 mx-auto my-5 rounded-md bg-black shadow-md relative'>
         <div className='px-5 py-3.5 bg-yellow-300 rounded-md absolute left-4 bottom-16'></div>
@@ -135,8 +139,8 @@ function AddPaymentPage({onClick}) {
         <div className='text-white text-right w-16 absolute right-4 bottom-2'>{cardExpirationDate==="" ? "MM/YY" : cardExpirationDate}</div>
       </div>
       
-      <div className='w-3/4 mx-auto text-left'>
-        <form>
+      <div className='flex-1 w-full overflow-y-auto'>
+        <form className='w-3/4 mx-auto text-left'>
           <div className='mb-3'>
             <div className='text-gray-500 text-sm'>카드번호</div>
             <input 
@@ -210,17 +214,11 @@ function AddPaymentPage({onClick}) {
 
           <div className='text-center py-10'>
             <button 
-              onClick={onClick}
-              className='py-2 px-12 bg-black w-full h-12 text-xl text-white rounded-3xl text-center'>작성 완료</button>
+              onClick={handleSaveButton}
+              className='py-2 px-12 mb-5 bg-black w-full h-12 text-xl text-white rounded-3xl text-center'>작성 완료</button>
           </div>
-
-
-
-
         </form>
-
       </div>
-
     </div>
   );
 }

@@ -6,7 +6,11 @@ import MyCardsPage from './MyCardsPage';
 function PaymentPage({ onClose }) {
 
   // 카드 배열 만들고 정리
+  const [cardList, setCardList] = useState([
+    ["KIM KING MAN", "1234-1234-1234-1234", "12/34", "123", "12"]
+  ]);
   
+
   const [addPayment, setIsAddPayment] = useState(false);  
   const handleAddPayment = (isAdd) => {
     setIsAddPayment(isAdd);
@@ -18,7 +22,7 @@ function PaymentPage({ onClose }) {
       onClick={onClose} // 배경을 클릭 시 닫힘
     >
       <div
-        className="bg-white p-6 rounded-lg shadow-xl w-full h-3/4 max-w-xl text-center"
+        className="bg-white p-6 rounded-lg shadow-xl w-full h-3/4 max-w-xl text-center overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className='relative text-xl mb-10'>
@@ -30,7 +34,7 @@ function PaymentPage({ onClose }) {
         </div>
 
         <div className='inline'>
-          { !addPayment ? <MyCardsPage handleAddPayment={(e) => handleAddPayment(true)} /> : <AddPaymentPage onClick={(e) => handleAddPayment(false)}/> }
+          { !addPayment ? <MyCardsPage handleAddPayment={(e) => handleAddPayment(true)} cardList={cardList} /> : <AddPaymentPage setCardList={setCardList} onClick={(e) => handleAddPayment(false)}/> }
         </div>
       </div>
     </div>

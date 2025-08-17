@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/interninmeta-react-shoe-page/static/css/main.f855e6bc.css",
-    "main.js": "/interninmeta-react-shoe-page/static/js/main.dda1c780.js",
+    "main.js": "/interninmeta-react-shoe-page/static/js/main.153d9210.js",
     "static/js/453.9c8a00ab.chunk.js": "/interninmeta-react-shoe-page/static/js/453.9c8a00ab.chunk.js",
     "static/media/shoes.svg": "/interninmeta-react-shoe-page/static/media/shoes.c3dcde813b43d0ec7980cc75b77edd5f.svg",
     "index.html": "/interninmeta-react-shoe-page/index.html",
     "static/media/plus-icon.svg": "/interninmeta-react-shoe-page/static/media/plus-icon.6db58bc49073c0539accbc554713ecc6.svg",
     "main.f855e6bc.css.map": "/interninmeta-react-shoe-page/static/css/main.f855e6bc.css.map",
-    "main.dda1c780.js.map": "/interninmeta-react-shoe-page/static/js/main.dda1c780.js.map",
+    "main.153d9210.js.map": "/interninmeta-react-shoe-page/static/js/main.153d9210.js.map",
     "453.9c8a00ab.chunk.js.map": "/interninmeta-react-shoe-page/static/js/453.9c8a00ab.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.dda1c780.js"
+    "static/js/main.153d9210.js"
   ]
 }

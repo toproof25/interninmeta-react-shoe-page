@@ -1,0 +1,30 @@
+{
+  "1": {
+    "image": "/images/samsung-galaxy.jpg",
+    "brand": "삼성전자",
+    "name": "갤럭시 S25",
+    "information" : "이것은 첫번째 레슨. 갤럭시 사용하기",
+    "price": 1200000
+  },
+  "2": {
+    "image": "/images/apple-iphone.jpg",
+    "brand": "Apple",
+    "name": "iPhone 17 Pro",
+    "information" : "이것은 두번째 레슨. 아이폰은 쳐다보지 않기",
+    "price": 1800000
+  },
+  "3": {
+    "image": "/images/lg-gram.jpg",
+    "brand": "LG전자",
+    "name": "LG 그램 2025",
+    "information" : "드디어 세번째 레슨. 노트북은 역시 Gram",
+    "price": 2200000
+  },
+  "4": {
+    "image": "/images/sony-headphone.jpg",
+    "brand": "Sony",
+    "name": "WH-1000XM6",
+    "information" : "슬피지만 마지막 레슨. 소니는 헤드셋이 최고",
+    "price": 499000
+  }
+}

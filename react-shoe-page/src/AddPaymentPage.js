@@ -26,9 +26,8 @@ function AddPaymentPage({setCardList, onClick}) {
 
     let newRawValue;
 
-    // 사용자가 글자를 삭제했을 때 (주로 Backspace)
+    // 사용자가 글자를 삭제했을 때
     if (userInput.length < formattedCardNumber.length) {
-      // 마지막 글자가 하이픈(-)인 경우, 그 앞의 숫자까지 총 2개를 지워야 자연스럽습니다.
       if (formattedCardNumber.slice(-1) === '-') {
         newRawValue = cardNumber.slice(0, cardNumber.length - 2);
       } else {
@@ -38,19 +37,15 @@ function AddPaymentPage({setCardList, onClick}) {
     // 사용자가 글자를 추가했을 때
     else {
       const addedChar = userInput.slice(-1);
-      // 추가된 글자가 숫자인 경우에만 cardNumber에 반영합니다.
       if (!isNaN(parseInt(addedChar, 10))) {
         newRawValue = (cardNumber + addedChar).slice(0, 16);
       } else {
-        // 숫자가 아닌 문자(예: 'a', '-')가 직접 입력되면 무시합니다.
         newRawValue = cardNumber;
       }
     }
 
-    // 새로 계산된 실제 숫자 값을 state에 저장합니다.
     setCardNumber(newRawValue);
 
-    // --- 이제 화면에 표시될 값을 새로 만듭니다 ---
     let displayValue = '';
     for (let i = 0; i < newRawValue.length; i++) {
       if (i >= 8) {
@@ -63,18 +58,15 @@ function AddPaymentPage({setCardList, onClick}) {
       }
     }
 
-    // 화면에 보여질 값을 state에 저장합니다.
     setFormattedCardNumber(displayValue);
     console.log('카드번호 입력 값:', event.target.value);
   };
 
-  // 유효기간 핸들링
   const handleDateChange = (event) => {
     const rawValue = event.target.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
     let formattedValue = rawValue;
 
     if (rawValue.length > 2) {
-      // 4자리(MMYY)로 입력을 제한하고, MM과 YY 사이에 '/'를 삽입합니다.
       formattedValue = `${rawValue.slice(0, 2)}/${rawValue.slice(2, 4)}`;
     }
     setCardExpirationDate(formattedValue);
@@ -94,27 +86,21 @@ function AddPaymentPage({setCardList, onClick}) {
     console.log('보안코드 입력 값:', event.target.value);
   };
 
-  // 비밀번호 변경을 처리하는 핸들러 함수
+  // 비밀번호 변경 핸들러
   const handlePasswordChange = (e, index) => {
     const value = e.target.value;
 
-    // 비밀번호 state 업데이트
     const newPassword = [...cardPassword];
-    // 입력된 값으로 해당 위치의 비밀번호를 갱신 (값이 없으면 ''로 덮어쓰여 삭제 효과)
     newPassword[index] = value;
     setCardPassword(newPassword);
 
-    // 첫 번째 칸에 값이 입력되면, 두 번째 칸으로 포커스 이동
     if (index === 0 && value.length > 0) {
       secondInputRef.current.focus();
     }
   };
 
-  // Backspace 키 입력을 처리하는 핸들러 함수
   const handleKeyDown = (e, index) => {
-    // Backspace를 누르고, 해당 칸이 비어있을 때
     if (e.key === 'Backspace' && !cardPassword[index]) {
-      // 두 번째 칸이었다면, 첫 번째 칸으로 포커스 이동
       if (index === 1) {
         firstInputRef.current.focus();
       }

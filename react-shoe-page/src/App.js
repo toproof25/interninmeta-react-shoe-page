@@ -11,14 +11,9 @@ import productData from './data/ProductData.json';
 function App() {
   
   // 카드 배열 만들고 정리
-  const [cardList, setCardList] = useState([
-    ["HONG GIL DONG", "1234-1234-1234-1234", "12/34", "123", "12"]
-  ]);
+  const [cardList, setCardList] = useState([  ]);
 
-  const [cart, setCart] = useState({
-    '1': 2,
-    '3': 1,
-  });
+  const [cart, setCart] = useState({  });
 
   const handleFinalCart = (products) => {
 
@@ -50,7 +45,7 @@ function App() {
   }
 
   const [pageState, setPageState] = useState(0)
-  const [finalPayment, setFinalPayment] = useState([3, 98000])
+  const [finalPayment, setFinalPayment] = useState([0, 0])
 
   // [추가] 수량 증가 함수
   const increaseQuantity = (productId) => {

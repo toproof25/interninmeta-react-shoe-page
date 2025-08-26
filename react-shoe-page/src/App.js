@@ -47,7 +47,6 @@ function App() {
     const finalAmount = totalProductPrice + shippingFee;
 
     setFinalPayment([amount, finalAmount])
-    console.log(amount, finalAmount, "이게 뭐야")
   }
 
   const [pageState, setPageState] = useState(0)

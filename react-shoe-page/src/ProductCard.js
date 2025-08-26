@@ -1,9 +1,7 @@
 import logo from './images/shoes.svg';
 
-// ProductCard.js
-
 // props로 image, brand, name, information, price를 추가로 받습니다.
-function ProductCard({ productID, addProtuct, checkPayment, image, brand, name, information, price }) {
+function ProductCard({ productID, addProtuct, handleFinalCart, image, brand, name, information, price, setIsPaymentWindow }) {
   return (
     // 전체 카드: 최대 너비, 그림자, 둥근 모서리, 배경색, 내용 넘침 방지
     <div className="max-w-sm rounded-xl overflow-hidden shadow-lg bg-white text-black text-left border">
@@ -36,7 +34,7 @@ function ProductCard({ productID, addProtuct, checkPayment, image, brand, name, 
 
         <button 
           className="bg-yellow-300 text-gray-800 font-bold py-1.5 px-4 rounded-3xl text-sm" 
-          onClick={() => checkPayment(productID)} // 어떤 상품인지 알 수 있게 ID를 넘겨주는 것이 좋습니다.
+          onClick={handleFinalCart}
         >
           구매
         </button>

@@ -5,14 +5,53 @@ import Top from './Top';
 import ProductListPage from './ProductListPage';
 import PaymentPage from './PaymentPage';
 import CartList from './CartList';
+import PaymentComplete from './PaymentComplete';
 import productData from './data/ProductData.json';
 
 function App() {
   
+  // 카드 배열 만들고 정리
+  const [cardList, setCardList] = useState([
+    ["HONG GIL DONG", "1234-1234-1234-1234", "12/34", "123", "12"]
+  ]);
+
   const [cart, setCart] = useState({
     '1': 2,
     '3': 1,
   });
+
+  const handleFinalCart = (products) => {
+
+    setIsPaymentWindow(true)
+
+    const cartItemIds = Object.keys(products);
+
+    // 1. cart에 있는 모든 상품의 총금액을 계산합니다.
+    let amount = 0
+    const totalProductPrice = cartItemIds.reduce((sum, id) => {
+      const productInfo = productData[id];
+      const quantity = products[id];
+      amount += quantity
+      
+      // 상품 정보가 있을 경우에만 계산 (오류 방지)
+      if (productInfo) {
+        return sum + (productInfo.price * quantity);
+      }
+      return sum;
+    }, 0);
+
+    // 장바구니에 상품이 있을 경우에만 배송비를 추가합니다.
+    const shippingFee = totalProductPrice < 100000 ? 3000 : 0;
+
+    // 3. 최종 결제 금액 (상품 총금액 + 배송비)
+    const finalAmount = totalProductPrice + shippingFee;
+
+    setFinalPayment([amount, finalAmount])
+    console.log(amount, finalAmount, "이게 뭐야")
+  }
+
+  const [pageState, setPageState] = useState(0)
+  const [finalPayment, setFinalPayment] = useState([3, 98000])
 
   // [추가] 수량 증가 함수
   const increaseQuantity = (productId) => {
@@ -21,16 +60,13 @@ function App() {
       [productId]: (prevCart[productId] || 0) + 1
     }));
   };
-
   // [추가] 수량 감소 함수
   const decreaseQuantity = (productId) => {
     setCart(prevCart => {
       const newCart = { ...prevCart };
-      // 수량이 1보다 크면 1을 빼고, 그렇지 않으면 로직을 실행하지 않음
       if (newCart[productId] > 1) {
         newCart[productId] -= 1;
       } else {
-        // 수량이 1개일 때 감소시키면 상품을 장바구니에서 제거
         delete newCart[productId];
       }
       return newCart;
@@ -38,17 +74,9 @@ function App() {
   };
 
 
-  const [payments, setPayments] = useState(0);
-
   const addProtuct = (productId) => { 
     setCart(prevCart => {
-      // 현재 장바구니에 해당 상품이 있는지 확인합니다.
-      // 만약 상품이 없다면 수량은 0, 있다면 현재 수량을 가져옵니다.
       const currentQuantity = prevCart[productId] || 0;
-      
-      // 새로운 장바구니 객체를 생성합니다.
-      // 기존 장바구니 내용을 복사하고(...prevCart),
-      // 현재 상품(productId)의 수량을 1 증가시킵니다.
       return {
         ...prevCart,
         [productId]: currentQuantity + 1,
@@ -60,62 +88,61 @@ function App() {
   };
 
   const totalCartItems = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
-  const [isCartListPage, setIsCartListPage] = useState(false);
   const handleIsCartListPage = (isPage) => {
-    setIsCartListPage(isPage)
+    setPageState( isPage )
   }
 
   const [isPaymentWindow, setIsPaymentWindow] = useState(false);  
-  const checkPayment = () => {
-    if (payments === 0)
-    {
-      console.log("결제 수단좀 추가해라");
-      setIsPaymentWindow(true);
-      setPayments(0);
-    }
-    else
-    {
-      console.log("구매 끝~")
-    }
+
+  const handlePageState = () => {
+        if (pageState === 0)
+        {
+          return <ProductListPage
+            addProtuct={addProtuct}
+            setIsPaymentWindow={setIsPaymentWindow}
+            productData={productData}
+            handleFinalCart={handleFinalCart}
+          />
+        }
+        else if (pageState === 1)
+        {
+          return <CartList 
+            cart={cart}
+            productData={productData}
+            totalCartItems={totalCartItems}
+            increaseQuantity={increaseQuantity}
+            decreaseQuantity={decreaseQuantity}
+            handleFinalCart={handleFinalCart}
+            pay={pay}
+          />
+        }
+        else if (pageState === 2)
+        {
+          return <PaymentComplete 
+            amount={finalPayment[0]}
+            price={finalPayment[1]}
+            setPageState={setPageState}
+          />
+        }
+  }
+
+  const pay = (card) => {
+    setIsPaymentWindow(false)
+    setPageState(2)
+    console.log("결제한다 나는", card[1], pageState, "번호의 카드로");
   }
 
 
 
   return (
     <div className="max-w-3xl mx-auto">
-
-      { /* 상단 검정색 배경의 장바구니 아이콘 + 담은 상품 개수 */ }
       <header>
-        <Top  cartItems={totalCartItems} handleIsCartListPage={handleIsCartListPage} isCartListPage={isCartListPage} />
+        <Top  cartItems={totalCartItems} handleIsCartListPage={handleIsCartListPage} pageState={pageState} />
       </header>
 
-
-
-
-      {/* 결제 수단 유무에 따라 화면 변경 */}
       <div className="relative">
-        {!isCartListPage ? (
-          // true일 경우: 상품 목록 페이지
-          <ProductListPage
-            addProtuct={addProtuct}
-            checkPayment={checkPayment}
-            productData={productData}
-          />
-        ) : (
-          // false일 경우: 장바구니 페이지
-          // CartList 컴포넌트는 cart 상태와 productData를 필요로 할 것입니다.
-          <CartList 
-            cart={cart}
-            productData={productData}
-            totalCartItems={totalCartItems}
-            increaseQuantity={increaseQuantity}
-            decreaseQuantity={decreaseQuantity}
-            checkPayment={checkPayment}
-          />
-        )}
-
-        {/* isPaymentWindow가 true일 때만 PaymentPage를 팝업으로 렌더링 */}
-        {isPaymentWindow && <PaymentPage onClose={() => setIsPaymentWindow(false)} />}
+        {handlePageState()}
+        {isPaymentWindow && <PaymentPage cardList={cardList} setCardList={setCardList} onClose={() => setIsPaymentWindow(false)} pay={pay}/>}
       </div>
 
     </div>

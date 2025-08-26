@@ -1,6 +1,6 @@
 import ProductCard from './ProductCard';
 
-function ProductListPage({/*protuctAmount,*/ addProtuct, checkPayment, productData}) {
+function ProductListPage({/*protuctAmount,*/ addProtuct, setIsPaymentWindow, productData, handleFinalCart}) {
 
   // productData 객체의 key들(상품 ID)을 배열로 만듭니다. (예: ['1', '2', '3', ...])
   const productIds = Object.keys(productData);
@@ -25,7 +25,6 @@ function ProductListPage({/*protuctAmount,*/ addProtuct, checkPayment, productDa
           productIds.map((id) => {
             // 현재 id에 해당하는 상품의 상세 정보를 가져옵니다.
             const productInfo = productData[id];
-
             return (
               <ProductCard
                 // 리액트가 각 요소를 식별하기 위한 고유한 key
@@ -34,7 +33,8 @@ function ProductListPage({/*protuctAmount,*/ addProtuct, checkPayment, productDa
                 // ProductCard에 전달할 props
                 productID={id} 
                 addProtuct={addProtuct} 
-                checkPayment={checkPayment}
+                //setIsPaymentWindow={() => setIsPaymentWindow(true)}
+                handleFinalCart={() => handleFinalCart({[id] : 1})}
 
                 // ✨ productInfo 객체의 모든 속성을 props로 한번에 전달 (image, brand, name 등)
                 {...productInfo}

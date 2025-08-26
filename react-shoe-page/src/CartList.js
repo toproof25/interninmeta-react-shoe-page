@@ -1,6 +1,6 @@
 import CartListItem from './CartListItem';
 
-function CartList({cart, productData, totalCartItems, increaseQuantity, decreaseQuantity, checkPayment}) {
+function CartList({cart, productData, totalCartItems, increaseQuantity, decreaseQuantity, pay, handleFinalCart}) {
   const cartItemIds = Object.keys(cart);
 
   // 1. cart에 있는 모든 상품의 총금액을 계산합니다.
@@ -93,7 +93,7 @@ function CartList({cart, productData, totalCartItems, increaseQuantity, decrease
       <section className='max-w-3xl mx-auto py-5 px-3 text-center'>
         <button 
           className="w-4/5 bg-gray-800 text-white text-lg font-bold py-3 rounded-full hover:bg-black transition-colors"
-          onClick={checkPayment}
+          onClick={()=>handleFinalCart(cart)}
         >
           결제하기
         </button>

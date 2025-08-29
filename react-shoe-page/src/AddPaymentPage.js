@@ -26,7 +26,7 @@ function AddPaymentPage({setCardList, onClick}) {
 
     let newRawValue;
 
-    // 사용자가 글자를 삭제했을 때
+    // 삭제했을 때
     if (userInput.length < formattedCardNumber.length) {
       if (formattedCardNumber.slice(-1) === '-') {
         newRawValue = cardNumber.slice(0, cardNumber.length - 2);
@@ -34,7 +34,7 @@ function AddPaymentPage({setCardList, onClick}) {
         newRawValue = cardNumber.slice(0, cardNumber.length - 1);
       }
     } 
-    // 사용자가 글자를 추가했을 때
+    // 추가했을 때
     else {
       const addedChar = userInput.slice(-1);
       if (!isNaN(parseInt(addedChar, 10))) {
